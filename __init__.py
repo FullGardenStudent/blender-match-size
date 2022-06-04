@@ -1,8 +1,11 @@
 
 bl_info = {
-    "name": "Match Size Addon",
+    'name': 'Match Size Addon',
+    'description': 'A poor implementation of Houdini\'s match size node'
+    'author': 'FullGardenStudent'
+    'version': (0, 6, 9),
     "blender": (3, 1, 0),
-    "category": "Object",
+    'category': 'Object',
 }
 
 
