@@ -1,13 +1,12 @@
 
 bl_info = {
     'name': 'Match Size Addon',
-    'description': 'A poor implementation of Houdini\'s match size node'
-    'author': 'FullGardenStudent'
+    'description': 'A poor implementation of Houdinis match size node',
+    'author': 'FullGardenStudent',
     'version': (0, 6, 9),
     "blender": (3, 1, 0),
     'category': 'Object',
 }
-
 
 import bpy
 
@@ -23,11 +22,8 @@ class XMax(bpy.types.Operator):
         obj.location[0] = 0
         obj.data.update()
         bpy.context.view_layer.depsgraph.update()
-        print(obj.location)
         v = obj.data.vertices[1]
-        print(v)
         fc = obj.matrix_world @ v.co
-        #print(fc)
         co = [(obj.matrix_world @v.co) for v in obj.data.vertices]
         k = len(obj.data.vertices)
         n = co[0][0]
@@ -44,11 +40,8 @@ class XMin(bpy.types.Operator):
         obj.location[0] = 0
         obj.data.update()
         bpy.context.view_layer.depsgraph.update()
-        print(obj.location)
         v = obj.data.vertices[1]
-        print(v)
         fc = obj.matrix_world @ v.co
-        #print(fc)
         co = [(obj.matrix_world @v.co) for v in obj.data.vertices]
         k = len(obj.data.vertices)
         m = co[0][0]
@@ -65,11 +58,8 @@ class XCen(bpy.types.Operator):
         obj.location[0] = 0
         obj.data.update()
         bpy.context.view_layer.depsgraph.update()
-        print(obj.location)
         v = obj.data.vertices[1]
-        print(v)
         fc = obj.matrix_world @ v.co
-        #print(fc)
         co = [(obj.matrix_world @v.co) for v in obj.data.vertices]
         k = len(obj.data.vertices)
         m = co[0][0]
@@ -88,11 +78,8 @@ class YMax(bpy.types.Operator):
         obj.location[1] = 0
         obj.data.update()
         bpy.context.view_layer.depsgraph.update()
-        print(obj.location)
         v = obj.data.vertices[1]
-        print(v)
         fc = obj.matrix_world @ v.co
-        #print(fc)
         co = [(obj.matrix_world @v.co) for v in obj.data.vertices]
         k = len(obj.data.vertices)
         n = co[0][1]
@@ -109,11 +96,8 @@ class YMin(bpy.types.Operator):
         obj.location[1] = 0
         obj.data.update()
         bpy.context.view_layer.depsgraph.update()
-        print(obj.location)
         v = obj.data.vertices[1]
-        print(v)
         fc = obj.matrix_world @ v.co
-        #print(fc)
         co = [(obj.matrix_world @v.co) for v in obj.data.vertices]
         k = len(obj.data.vertices)
         n = co[0][1]
@@ -130,11 +114,8 @@ class YCen(bpy.types.Operator):
         obj.location[1] = 0
         obj.data.update()
         bpy.context.view_layer.depsgraph.update()
-        print(obj.location)
         v = obj.data.vertices[1]
-        print(v)
         fc = obj.matrix_world @ v.co
-        #print(fc)
         co = [(obj.matrix_world @v.co) for v in obj.data.vertices]
         k = len(obj.data.vertices)
         m = co[0][1]
@@ -153,11 +134,8 @@ class ZMax(bpy.types.Operator):
         obj.location[2] = 0
         obj.data.update()
         bpy.context.view_layer.depsgraph.update()
-        print(obj.location)
         v = obj.data.vertices[1]
-        print(v)
         fc = obj.matrix_world @ v.co
-        #print(fc)
         co = [(obj.matrix_world @v.co) for v in obj.data.vertices]
         k = len(obj.data.vertices)
         n = co[0][2]
@@ -174,11 +152,8 @@ class ZMin(bpy.types.Operator):
         obj.location[2] = 0
         obj.data.update()
         bpy.context.view_layer.depsgraph.update()
-        print(obj.location)
         v = obj.data.vertices[1]
-        print(v)
         fc = obj.matrix_world @ v.co
-        #print(fc)
         co = [(obj.matrix_world @v.co) for v in obj.data.vertices]
         k = len(obj.data.vertices)
         n = co[0][2]
@@ -195,62 +170,40 @@ class ZCen(bpy.types.Operator):
         obj.location[2] = 0
         obj.data.update()
         bpy.context.view_layer.depsgraph.update()
-        print(obj.location)
         v = obj.data.vertices[0]
-        print(v.co)
         fc = obj.matrix_world @ v.co
-        #print(fc)
         co = [(obj.matrix_world @v.co) for v in obj.data.vertices]
         k = len(obj.data.vertices)
         n = co[0][2]
         m = co[0][2]
-        print(m)
-        print(n)
         for i in range(len(obj.data.vertices)):
             n = min(n,co[i][2])
             m = max(m,co[i][2])
-        print(m)
-        print(n)
         obj.location[2] -= (m+n)/2
         return { 'FINISHED' }
-#-----------------------------------------------------------------------------------
-class FC_MT_SubMenuX(Menu):
+
+class MS_MT_SubMenuX(Menu):
     bl_label = 'X Axis position'
     def draw(self, context):
         layout = self.layout
         active_object = bpy.context.view_layer.objects.active
         pie = layout.menu_pie()
-        if active_object:
-            mode = active_object.mode
-            if(mode=="OBJECT"):
-                is_mesh = active_object.type
-                if(is_mesh == "MESH"):
-                    #print("Selected object is a mesh")
-                    pie.operator("x.min", text="Minimum", icon="BLENDER")
-                    pie.operator("x.max", text="Maximum", icon="BLENDER")
-                    pie.operator("x.cen", text="Center", icon="BLENDER")
-                else:
-                    print("Please select a mesh")
+        pie.operator("x.min", text="Minimum", icon="BLENDER")
+        pie.operator("x.max", text="Maximum", icon="BLENDER")
+        pie.operator("x.cen", text="Center", icon="BLENDER")
+        
 
-class FC_MT_SubMenuY(Menu):
+class MS_MT_SubMenuY(Menu):
     bl_label = 'Y Axis position'
     def draw(self, context):
         layout = self.layout
         active_object = bpy.context.view_layer.objects.active
         pie = layout.menu_pie()
-        if active_object:
-            mode = active_object.mode
-            if(mode=="OBJECT"):
-                is_mesh = active_object.type
-                if(is_mesh == "MESH"):
-                    #print("Selected object is a mesh")
-                    pie.operator("y.min", text="Minimum", icon="BLENDER")
-                    pie.operator("y.max", text="Maximum", icon="BLENDER")
-                    pie.operator("y.cen", text="Center", icon="BLENDER")
-                else:
-                    print("Please select a mesh")
+        pie.operator("y.min", text="Minimum", icon="BLENDER")
+        pie.operator("y.max", text="Maximum", icon="BLENDER")
+        pie.operator("y.cen", text="Center", icon="BLENDER")
 
-class FC_MT_SubMenuZ(Menu):
+class MS_MT_SubMenuZ(Menu):
     bl_label = 'Z Axis position'
     def draw(self, context):
         layout = self.layout
@@ -267,27 +220,37 @@ class FC_MT_SubMenuZ(Menu):
                     pie.operator("z.cen", text="Center", icon="BLENDER")
                 else:
                     print("Please select a mesh")
+                    self.report({'WARNING'}, "Pelase select a MESH")
 
-class FC_MT_Pie_menu(Menu):
+class MS_MT_PieMenu(Menu):
+    bl_idname = "MS_MT_MAIN_MENU"
     bl_label = "Axis Selection Menu"
     def draw(self, context):
         active_object = bpy.context.view_layer.objects.active
-        print(active_object)
         layout = self.layout
         pie = layout.menu_pie()
-        pie.operator("wm.call_menu_pie", text="X", icon="BLENDER").name="FC_MT_SubMenuX"
-        pie.operator("wm.call_menu_pie", text="Y", icon="BLENDER").name="FC_MT_SubMenuY"
-        pie.operator("wm.call_menu_pie", text="Z", icon="BLENDER").name="FC_MT_SubMenuZ"
+        if active_object:
+            if(active_object.mode == "OBJECT"):
+                if(active_object.type == "MESH"):
+                    pie.operator("wm.call_menu_pie", text="X", icon="BLENDER").name="MS_MT_SubMenuX"
+                    pie.operator("wm.call_menu_pie", text="Y", icon="BLENDER").name="MS_MT_SubMenuY"
+                    pie.operator("wm.call_menu_pie", text="Z", icon="BLENDER").name="MS_MT_SubMenuZ"
+                else:
+                    print("Please select a mesh")
+                    #self.report({'INFO'},"Please select a Mesh")
+            else:
+                print("Only available in object mode")
+        else:
+            print("Please select a mesh object")
+
+keymaps = []
 
 def register():
-    wm = bpy.context.window_manager
-    km = wm.keyconfigs.addon.keymaps.new(name='Object Mode', space_type="EMPTY")
-    kmi = km.keymap_items.new(ObjectCursorArray.bl_idname, 'V', 'PRESS')
-    addon_keymaps.append((km, kmi))
-    bpy.utils.register_class(FC_MT_Pie_menu)
-    bpy.utils.register_class(FC_MT_SubMenuX)
-    bpy.utils.register_class(FC_MT_SubMenuY)
-    bpy.utils.register_class(FC_MT_SubMenuZ)
+    
+    bpy.utils.register_class(MS_MT_PieMenu)
+    bpy.utils.register_class(MS_MT_SubMenuX)
+    bpy.utils.register_class(MS_MT_SubMenuY)
+    bpy.utils.register_class(MS_MT_SubMenuZ)
     bpy.utils.register_class(XMax)
     bpy.utils.register_class(XMin)
     bpy.utils.register_class(XCen)
@@ -297,15 +260,23 @@ def register():
     bpy.utils.register_class(ZMax)
     bpy.utils.register_class(ZMin)
     bpy.utils.register_class(ZCen)
+    
+    kc = bpy.context.window_manager.keyconfigs.addon
+    km = kc.keymaps.new(name='3D View', space_type='VIEW_3D')
+    
+    kmi = km.keymap_items.new("wm.call_menu_pie", "V", "PRESS")
+    kmi.properties.name = MS_MT_PieMenu.bl_idname
+    
+    addon_keymaps.append((km, kmi))
 
 def unregister():
-    for km, kmi in addon_keymaps:
+    for km, kmi in keymaps:
         km.keymap_items.remove(kmi)
-    addon_keymaps.clear()
-    bpy.utils.unregister_class(FC_MT_Pie_menu)
-    bpy.utils.unregister_class(FC_MT_SubMenuX)
-    bpy.utils.unregister_class(FC_MT_SubMenuY)
-    bpy.utils.unregister_class(FC_MT_SubMenuZ)
+    keymaps.clear()
+    bpy.utils.unregister_class(MS_MT_PieMenu)
+    bpy.utils.unregister_class(MS_MT_SubMenuX)
+    bpy.utils.unregister_class(MS_MT_SubMenuY)
+    bpy.utils.unregister_class(MS_MT_SubMenuZ)
     bpy.utils.unregister_class(XMax)
     bpy.utils.unregister_class(XMin)
     bpy.utils.unregister_class(XCen)
@@ -320,9 +291,3 @@ if __name__ == "__main__":
     register()
     
     bpy.ops.wm.call_menu_pie(name="FC_MT_Pie_menu")
-
-
-
-
-
-#----------------------------------------------------------------------------------------
